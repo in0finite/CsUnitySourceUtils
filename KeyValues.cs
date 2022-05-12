@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Facepunch.Parse;
-using SourceUtils.Properties;
 
 namespace SourceUtils
 {
@@ -245,9 +244,11 @@ namespace SourceUtils
         private static readonly Parser _sEscapedParser;
         private static readonly Parser _sUnescapedParser;
 
+        private static readonly string GrammarDefinition = "Skip = /(\\s+|\\/\\/[^\\n]*(\\n|$))+/;Escaped{    Document = ( Definition.BlockList* | Definition.List ) /$/;    String = '\"' Quoted '\"' | '“' Quoted '”' | Unquoted    {        Quoted = /([^\"\\n\\\\]|\\\\[\\\\\"nt])*/;        Unquoted = /([^\\s\\/\"{}\\\\]|\\/(?!\\/)|\\\\[\\\\\"nt{}])+/;    }    ignore Skip    {        Definition = String ( \"{\" List \"}\" | String )        {            List = Definition*;            collapse            {                BlockList = \"{\" Definition.List \"}\";            }        }    }}Unescaped{    Document = ( Definition.BlockList* | Definition.List ) /$/;    String = '\"' Quoted '\"' | '“' Quoted '”' | Unquoted    {        Quoted = /[^\"\\n]*/;        Unquoted = /([^\\s\\/\"{}]|\\/(?!\\/))+/;    }    ignore Skip    {        Definition = String ( \"{\" List \"}\" | String )        {            List = Definition*;            collapse            {                BlockList = \"{\" Definition.List \"}\";            }        }    }}";
+
         static KeyValues()
         {
-            var grammar = GrammarBuilder.FromString( Resources.KeyValues );
+            var grammar = GrammarBuilder.FromString(GrammarDefinition);
 
             _sEscapedParser = grammar["Escaped.Document"];
             _sUnescapedParser = grammar["Unescaped.Document"];
