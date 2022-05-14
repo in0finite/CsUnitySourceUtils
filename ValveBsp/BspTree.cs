@@ -8,12 +8,12 @@ namespace SourceUtils.ValveBsp
 {
     public class BspTree
     {
-        internal interface IElem
+        public interface IElem
         {
             void GetIntersectingLeaves( Vector3[] corners, List<Leaf> outLeaves );
         }
 
-        private class Node : IElem
+        public class Node : IElem
         {
             public readonly int Index;
             public readonly BspNode Info;
@@ -87,14 +87,13 @@ namespace SourceUtils.ValveBsp
             }
         }
 
-        private readonly ValveBspFile _bsp;
         private readonly Node _headNode;
-        
+        public Node HeadNode => _headNode;
+
         public readonly BspModel Info;
 
         public BspTree( ValveBspFile bsp, int modelIndex )
         {
-            _bsp = bsp;
             Info = bsp.Models[modelIndex];
 
             _headNode = new Node( bsp, Info.HeadNode );
