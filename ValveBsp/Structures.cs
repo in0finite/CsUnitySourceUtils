@@ -12,6 +12,13 @@ namespace SourceUtils.ValveBsp
         public readonly short X;
         public readonly short Y;
         public readonly short Z;
+
+        public Vector3S(short x, short y, short z)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+        }
     }
 
     [StructLayout( LayoutKind.Sequential, Pack = 1 )]
